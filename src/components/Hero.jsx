@@ -12,7 +12,7 @@ const Hero = () => {
     const slides = Array(5).fill(null);
 
     return (
-        <div className="mx-32 flex">
+        <div className="container mx-auto flex">
             <div className="flex mt-10 flex-col gap-4 w-56 h-80">
                 <Link href={"/womansfashion"} className="flex justify-between">
                     <p>Woman's Fashion</p>
@@ -74,4 +74,4 @@ const Hero = () => {
     );
 };
 
-export default Hero;
+export default Hero;    
