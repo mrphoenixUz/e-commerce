@@ -42,7 +42,7 @@ const Hero = () => {
                 >
                     {slides.map((_, index) => (
                         <SwiperSlide key={index}>
-                            <div className="flex h-full items-center">
+                            <div className="flex h-full items-center pb-12">
                                 <div className="ml-16 mt-14 flex flex-col justify-center">
                                     <div className="flex gap-4 items-center">
                                         <img src="./apple.png" alt="Apple Logo" />
@@ -53,10 +53,10 @@ const Hero = () => {
                                     <p className="text-white font-semibold text-5xl mt-5 font-inter w-[294px]">
                                         Up to 10% off Voucher
                                     </p>
-                                    <div className="flex gap-2 mt-4">
+                                    <Link href={"/shop"} className="flex gap-2 mt-4">
                                         <p className="text-white border-b border-white">Shop Now</p>
                                         <ArrowRightAlt className="text-white" />
-                                    </div>
+                                    </Link>
                                 </div>
                                 <div className="flex-grow flex justify-end mt-4 items-center pr-10">
                                     <img
