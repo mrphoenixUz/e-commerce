@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
-import { ArrowLeft, ArrowRight, Star, StarBorder } from "@mui/icons-material";
+import { Star, StarBorder } from "@mui/icons-material";
 import Link from "next/link";
 
 const FlashSales = () => {
@@ -43,7 +43,7 @@ const FlashSales = () => {
                 const data = await response.json();
                 setProducts(data.products || []);
             } catch (error) {
-                console.error("Error fetching products:", error);
+                console.error("Error fetching products: ", error);
             }
         };
         fetchProducts();
@@ -66,15 +66,15 @@ const FlashSales = () => {
     };
     return (
         <div className="container mx-auto mt-36">
-            <div className="flex">
+            <div className="flex justify-between">
                 <div>
                     <div className="flex items-center gap-4">
-                        <div className="w-5 h-8 bg-[#DB4444]"></div>
+                        <div className="w-5 h-8 bg-[#DB4444] rounded"></div>
                         <h1 className="font-semibold text-base text-[#DB4444]">Today's</h1>
                     </div>
                     <h1 className="mt-6 text-black text-4xl font-semibold">Flash Sales</h1>
                 </div>
-                <div className="mt-6 ml-[88px] mr-[470px] flex items-center space-x-6">
+                <div className="mt-8 mr-[310px] flex items-center space-x-6">
                     <div className="text-center">
                         <span className="text-sm text-gray-500">Days</span>
                         <h2 className="text-4xl font-bold">{String(timeLeft.days).padStart(2, "0")}</h2>
@@ -143,7 +143,6 @@ const FlashSales = () => {
                 <Link href={"/products"} className="bg-[#DB4444] items-center flex justify-center rounded-[4px] w-[234px] h-[56px] capitalize text-[#FAFAFA] font-medium text-base">View all products</Link>
             </div>
             <hr className="bg-gray-300 h-[2px]" />
-            <div className="mt-16 h-12 w-12 bg-red-500"></div>
         </div>
     );
 };
