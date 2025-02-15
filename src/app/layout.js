@@ -23,13 +23,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <body
-        className={`${poppins.variable} ${inter.variable} antialiased`}
+        className={`${poppins.variable} ${inter.variable} antialiased h-full flex flex-col`}
       >
-        <TopHeader />
-        <Header />
-        {children}
+        <div className="flex-1">
+          <TopHeader />
+          <Header />
+          {children}
+        </div>
         <Footer />
       </body>
     </html>

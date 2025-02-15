@@ -20,14 +20,6 @@ const ThisMonth = () => {
         fetchProducts();
     }, []);
 
-    const handleNext = () => {
-        setVisibleIndex((prevIndex) => (prevIndex + 1) % products.length);
-    };
-
-    const handlePrev = () => {
-        setVisibleIndex((prevIndex) => (prevIndex - 1 + products.length) % products.length);
-    };
-
     const handleRating = (productId, newRating) => {
         setProducts((prevProducts) =>
             prevProducts.map((product) =>
