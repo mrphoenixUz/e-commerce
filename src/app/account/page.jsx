@@ -156,14 +156,14 @@ const UserAccount = () => {
                                                 className="border-2 p-2 w-full"
                                                 placeholder="Last Name"
                                             />
-                                            <input
+                                            {/* <input
                                                 type="email"
                                                 name="email"
                                                 value={formData.email || ""}
                                                 onChange={handleInputChange}
                                                 className="border-2 p-2 w-full"
                                                 placeholder="Email"
-                                            />
+                                            /> */}
                                         </>
                                     ) : (
                                         <>

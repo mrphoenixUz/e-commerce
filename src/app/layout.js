@@ -32,11 +32,11 @@ export default function RootLayout({ children }) {
       >
         <Providers>
           <div className="flex-1">
-            <TopHeader />
+            {/* <TopHeader /> */}
             <Header />
             {children}
           </div>
-          <Footer />
+          {/* <Footer /> */}
         </Providers>
       </body>
     </html>

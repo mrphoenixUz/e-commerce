@@ -2,31 +2,11 @@
 import React, { useState, useEffect } from "react";
 import { Star, StarBorder } from "@mui/icons-material";
 import Link from "next/link";
+import { useGetProductsQuery } from "@/features/products/productsApi";
 
 const OurProducts = () => {
-    const [products, setProducts] = useState([]);
     const [visibleIndex, setVisibleIndex] = useState(0);
-
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await fetch("http://localhost:3003/products");
-                console.log("Response: ", response);
-                const data = await response.json();
-                console.log("Data: ", data);
-                setProducts(data || []);
-                console.log("Products: ", products);
-            } catch (error) {
-                console.error("Error fetching products: ", error);
-            }
-        };
-        fetchProducts();
-    }, []);
-    
-    useEffect(() => {
-        console.log("Updated Products: ", products);
-    }, [products]);
-
+    const { data: products, isLoading, error } = useGetProductsQuery();
     const handleNext = () => {
         setVisibleIndex((prevIndex) => (prevIndex + 1) % products.length);
     };
@@ -53,13 +33,13 @@ const OurProducts = () => {
         const handleResize = () => {
             setVisibleCount(getVisibleCount());
         };
-        
+
         // Set initial count
         setVisibleCount(getVisibleCount());
-        
+
         // Add event listener
         window.addEventListener('resize', handleResize);
-        
+
         // Cleanup
         return () => window.removeEventListener('resize', handleResize);
     }, []);
@@ -91,13 +71,13 @@ const OurProducts = () => {
             </div>
 
             <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-                {products.slice(visibleIndex, visibleIndex + visibleCount).map((product) => (
-                    <div key={product.id} className="p-3 sm:p-4 rounded-lg mx-auto w-full max-w-sm">
+                {products?.slice(visibleIndex, visibleIndex + visibleCount).map((product) => (
+                    <Link href={`/products/${product.id}`} key={product.id} className="p-3 sm:p-4 rounded-lg mx-auto w-full max-w-sm">
                         <div className="flex h-[200px] sm:h-[250px] w-full bg-[#F5F5F5] justify-center items-center rounded-lg overflow-hidden">
-                            <img 
-                                src={`http://localhost:3003${product.pictures[0]}`} 
+                            <img
+                                src={`http://localhost:3003${product.pictures[0]}`}
                                 alt={product.product_name}
-                                className="object-contain w-full h-full" 
+                                className="object-contain w-full h-full"
                             />
                         </div>
                         <div className="mt-3 sm:mt-4">
@@ -108,19 +88,19 @@ const OurProducts = () => {
                                 <span className="line-through text-gray-500 font-medium text-xs sm:text-base ml-2">${Math.round(product.price * 1.2)}</span>
                             </div>
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
-            
+
             <div className="flex justify-center my-8 sm:my-12 md:my-16">
-                <Link 
-                    href={"/products"} 
+                <Link
+                    href={"/products"}
                     className="bg-[#DB4444] items-center flex justify-center rounded-[4px] w-full max-w-[234px] h-[44px] sm:h-[56px] capitalize text-[#FAFAFA] font-medium text-sm sm:text-base"
                 >
                     View all products
                 </Link>
             </div>
-            
+
             <hr className="bg-gray-300 h-[2px]" />
         </div>
     );
