@@ -3,6 +3,9 @@ import "./globals.css";
 import TopHeader from "@/components/TopHeader";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Provider } from "react-redux";
+import { store } from "./store";
+import Providers from "@/components/Providers";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -27,12 +30,14 @@ export default function RootLayout({ children }) {
       <body
         className={`${poppins.variable} ${inter.variable} antialiased h-full flex flex-col`}
       >
-        <div className="flex-1">
-          <TopHeader />
-          <Header />
-          {children}
-        </div>
-        <Footer />
+        <Providers>
+          <div className="flex-1">
+            <TopHeader />
+            <Header />
+            {children}
+          </div>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

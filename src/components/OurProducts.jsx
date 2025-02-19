@@ -10,15 +10,22 @@ const OurProducts = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch("https://dummyjson.com/products");
+                const response = await fetch("http://localhost:3003/products");
+                console.log("Response: ", response);
                 const data = await response.json();
-                setProducts(data.products || []);
+                console.log("Data: ", data);
+                setProducts(data || []);
+                console.log("Products: ", products);
             } catch (error) {
                 console.error("Error fetching products: ", error);
             }
         };
         fetchProducts();
     }, []);
+    
+    useEffect(() => {
+        console.log("Updated Products: ", products);
+    }, [products]);
 
     const handleNext = () => {
         setVisibleIndex((prevIndex) => (prevIndex + 1) % products.length);
@@ -26,14 +33,6 @@ const OurProducts = () => {
 
     const handlePrev = () => {
         setVisibleIndex((prevIndex) => (prevIndex - 1 + products.length) % products.length);
-    };
-
-    const handleRating = (productId, newRating) => {
-        setProducts((prevProducts) =>
-            prevProducts.map((product) =>
-                product.id === productId ? { ...product, userRating: newRating } : product
-            )
-        );
     };
 
     // Calculate number of items to display based on screen size
@@ -96,32 +95,17 @@ const OurProducts = () => {
                     <div key={product.id} className="p-3 sm:p-4 rounded-lg mx-auto w-full max-w-sm">
                         <div className="flex h-[200px] sm:h-[250px] w-full bg-[#F5F5F5] justify-center items-center rounded-lg overflow-hidden">
                             <img 
-                                src={product.thumbnail} 
-                                alt={product.title} 
-                                className="object-cover w-full h-full" 
+                                src={`http://localhost:3003${product.pictures[0]}`} 
+                                alt={product.product_name}
+                                className="object-contain w-full h-full" 
                             />
                         </div>
                         <div className="mt-3 sm:mt-4">
-                            <h2 className="font-medium text-sm sm:text-base truncate">{product.title}</h2>
-                            <p className="text-gray-500 text-xs sm:text-sm line-clamp-2">{product.description}</p>
+                            <h2 className="font-medium text-sm sm:text-base truncate">{product.product_name}</h2>
+                            <p className="text-gray-500 text-xs sm:text-sm line-clamp-2">{product.product_name}</p>
                             <div className="mt-1 sm:mt-2">
                                 <span className="text-[#DB4444] font-medium text-sm sm:text-base">${product.price}</span>
                                 <span className="line-through text-gray-500 font-medium text-xs sm:text-base ml-2">${Math.round(product.price * 1.2)}</span>
-                            </div>
-                            <div className="flex items-center mt-1 sm:mt-2">
-                                {[1, 2, 3, 4, 5].map((star) => (
-                                    <button
-                                        key={star}
-                                        onClick={() => handleRating(product.id, star)}
-                                        className="text-yellow-400"
-                                    >
-                                        {star <= (product.userRating || 0) ? (
-                                            <Star className="text-base sm:text-lg md:text-xl" />
-                                        ) : (
-                                            <StarBorder className="text-base sm:text-lg md:text-xl" />
-                                        )}
-                                    </button>
-                                ))}
                             </div>
                         </div>
                     </div>
