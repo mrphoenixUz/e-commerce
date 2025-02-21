@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLogoutMutation } from '@/features/auth/authApi';
 import { initializeAuth } from '@/features/auth/authSlice';
+import { Heart, Search, ShoppingCart, User2 } from 'lucide-react';
 
 const Header = () => {
   const router = useRouter();
@@ -13,6 +14,14 @@ const Header = () => {
   const [logout] = useLogoutMutation();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      router.push(`/products?search=${searchTerm}`);
+    }
+  };
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
@@ -36,6 +45,7 @@ const Header = () => {
     try {
       await logout().unwrap();
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
       dispatch({ type: 'auth/logout' });
       setIsOpen(false);
       router.push('/login');
@@ -46,12 +56,12 @@ const Header = () => {
 
 
   return (
-    <div>
-      <div className='container mx-auto px-4 mt-6 md:mt-10 mb-4'>
+    <div className=''>
+      <div className='container mx-auto px-4 mt-6 mb-4'>
         <div className='flex flex-col md:flex-row md:items-center md:justify-between'>
           {/* Logo and mobile menu button */}
           <div className='flex justify-between items-center'>
-            <img src="./Logo.svg" alt="Logo" className='h-8 md:h-auto' />
+            <Link href={'/'} className='selection:bg-transparent h-8 md:h-auto font-bold font-serif text-3xl text-orange-600'>Phoenix<span className='text-orange-900'>Shop</span></Link>
             <button
               className='md:hidden'
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -63,7 +73,7 @@ const Header = () => {
           </div>
 
           {/* Navigation - mobile dropdown, desktop horizontal */}
-          <ul className={`${mobileMenuOpen ? 'flex' : 'hidden'} flex-col items-center gap-4 mt-4 md:mt-0 md:flex md:flex-row md:gap-12`}>
+          <ul className={`${mobileMenuOpen ? 'flex' : 'hidden'} px-3 flex-col items-center justify-between gap-4 mt-4 md:mt-0 md:flex md:flex-row md:gap-6`}>
             <Link href={"/"}>Home</Link>
             <Link href={"/contact"}>Contact</Link>
             <Link href={"/about"}>About</Link>
@@ -71,32 +81,18 @@ const Header = () => {
 
           {/* Search and icons - shown below nav on mobile */}
           <div className={`${mobileMenuOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row items-center gap-5 mt-4 md:mt-0`}>
-            <div className='flex w-full md:w-64 h-10 items-center bg-[#F5F5F5] justify-between rounded-md'>
-              <input
-                type="text"
-                className='bg-transparent outline-none ml-5 w-full placeholder:text-xs placeholder:font-normal'
-                placeholder='What are you looking for?'
-              />
-              <button><img width={24} height={24} src="./search.svg" alt="search svg" className='mr-3' /></button>
-            </div>
-
             <div className='flex gap-5 mt-4 md:mt-0'>
               {isAuthenticated ? (
                 // Authenticated user icons
-                <>
-                  <Link href={"/wishlist"}><img width={32} height={32} src="./Wishlist.svg" alt="Wishlist" /></Link>
-                  <Link href={"/cart"}><img width={32} height={32} src="./cart.svg" alt="Cart" /></Link>
+                <div className='flex items-center justify-between gap-2'>
+                  <Link href={"/wishlist"}><Heart /></Link>
+                  <Link href={"/cart"}><ShoppingCart /> </Link>
                   <div className="relative" ref={dropdownRef}>
                     <button
                       onClick={() => setIsOpen(!isOpen)}
                       className="focus:outline-none"
                     >
-                      <img
-                        width={32}
-                        height={32}
-                        src={isOpen ? "./user-focus.svg" : "./user.svg"}
-                        alt="User"
-                      />
+                      <User2 />
                     </button>
 
                     {isOpen && (
@@ -115,10 +111,10 @@ const Header = () => {
                       </div>
                     )}
                   </div>
-                </>
+                </div>
               ) : (
                 // Non-authenticated user buttons
-                <div className="flex gap-4">
+                <div className="flex md:flex-col lg:flex-row gap-4">
                   <Link
                     href="/login"
                     className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
@@ -136,6 +132,18 @@ const Header = () => {
             </div>
           </div>
         </div>
+        <form onSubmit={handleSearch} className="flex md:hidden w-full mt-4 h-10 items-center bg-[#F5F5F5] justify-between rounded-md">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="bg-transparent outline-none ml-5 w-full placeholder:text-xs placeholder:font-normal"
+            placeholder="What are you looking for?"
+          />
+          <button type="submit">
+            <Search className='mr-3' />
+          </button>
+        </form>
       </div>
 
       {/* Divider */}

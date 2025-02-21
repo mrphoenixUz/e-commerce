@@ -99,7 +99,9 @@ export default function ProductDetailClient({ productId }) {
                     {/* Main Image */}
                     <div className="relative h-[400px] sm:h-[500px] w-full border rounded-lg overflow-hidden bg-gray-100">
                         <Image
-                            src={`http://localhost:3003${product.pictures[selectedImageIndex]}`}
+                            src={product.pictures && product.pictures[selectedImageIndex]
+                                ? `https://phoenix-shop-backend.onrender.com${product.pictures[selectedImageIndex]}`
+                                : '/noo.jpeg'}
                             alt={product.product_name}
                             fill
                             className="object-contain"
@@ -118,7 +120,7 @@ export default function ProductDetailClient({ productId }) {
                                     }`}
                             >
                                 <Image
-                                    src={`http://localhost:3003${img}`}
+                                    src={img ? `https://phoenix-shop-backend.onrender.com${img}` : '/noo.jpeg'}
                                     alt={`${product.product_name} view ${idx + 1}`}
                                     fill
                                     className="object-contain"

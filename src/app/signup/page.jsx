@@ -8,6 +8,7 @@ import { useSignupMutation } from '@/features/auth/authApi';
 const SignupPage = () => {
   const router = useRouter();
   const [signup, { isLoading }] = useSignupMutation();
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     first_name: '',
     email: '',
@@ -28,7 +29,8 @@ const SignupPage = () => {
       console.log("response", response)
       router.push('/login');
     } catch (error) {
-      console.error('Failed to sign up:', error);
+      // console.error('Failed to sign up:', error);
+      setError("Email already exists");
     }
   };
 
@@ -52,7 +54,11 @@ const SignupPage = () => {
             <h1 className="text-3xl font-bold text-gray-900">Create an account</h1>
             <p className="text-gray-600 mt-2">Enter your details below</p>
           </div>
-
+          {error && (
+            <p className="text-red-500 text-sm text-center bg-red-100 p-2 rounded-md">
+              {error}
+            </p>
+          )}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
               <div>

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Star, StarBorder } from "@mui/icons-material";
 import Link from "next/link";
 import { useGetProductsQuery } from "@/features/products/productsApi";
+import noo from "@/images/noo.jpeg";
 
 const OurProducts = () => {
     const [visibleIndex, setVisibleIndex] = useState(0);
@@ -20,11 +21,11 @@ const OurProducts = () => {
         if (typeof window !== 'undefined') {
             if (window.innerWidth < 640) return 1;
             if (window.innerWidth < 768) return 2;
-            if (window.innerWidth < 1024) return 4;
-            if (window.innerWidth < 1280) return 6;
-            return 8;
+            if (window.innerWidth < 1024) return 3;
+            // if (window.innerWidth < 1280) return 6;
+            return 4;
         }
-        return 8; // Default for SSR
+        return 4; // Default for SSR
     };
 
     const [visibleCount, setVisibleCount] = useState(8);
@@ -75,10 +76,10 @@ const OurProducts = () => {
                     <Link href={`/products/${product.id}`} key={product.id} className="p-3 sm:p-4 rounded-lg mx-auto w-full max-w-sm">
                         <div className="flex h-[200px] sm:h-[250px] w-full bg-[#F5F5F5] justify-center items-center rounded-lg overflow-hidden">
                             <img
-                                src={`http://localhost:3003${product.pictures[0]}`}
+                                src={product.pictures[0] ? `https://phoenix-shop-backend.onrender.com${product.pictures[0]}` : noo.src}
                                 alt={product.product_name}
                                 className="object-contain w-full h-full"
-                            />
+                            />  
                         </div>
                         <div className="mt-3 sm:mt-4">
                             <h2 className="font-medium text-sm sm:text-base truncate">{product.product_name}</h2>

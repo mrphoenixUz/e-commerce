@@ -4,9 +4,13 @@ import {
     useGetProductQuery,
     useUpdateCartItemMutation,
     useRemoveFromCartMutation,
+    productsApi,
 } from "@/features/products/productsApi";
 import { X } from "lucide-react";
-import { useGetUserQuery } from "@/features/user/userApi";
+import { useGetUserQuery, userApi } from "@/features/user/userApi";
+import Link from "next/link";
+import noo from "@/images/noo.jpeg";
+import { useDispatch } from "react-redux";
 
 const calculateSubtotal = (price, quantity) => {
     return (parseFloat(price) * quantity).toFixed(2);
@@ -21,7 +25,7 @@ const CartItem = ({ item, onQuantityChange, onRemove }) => {
         <div className="flex items-center gap-4 border-b py-4">
             <div className="relative">
                 <img
-                    src={`http://localhost:3003${product.pictures[0]}`}
+                    src={product.pictures[0] ? `https://phoenix-shop-backend.onrender.com${product.pictures[0]}` : noo.src}
                     alt={product.product_name}
                     className="w-24 h-24 object-cover"
                 />
@@ -34,7 +38,7 @@ const CartItem = ({ item, onQuantityChange, onRemove }) => {
             </div>
 
             <div className="flex-1">
-                <h3 className="font-semibold">{product.product_name}</h3>
+                <Link href={`products/${product.id}`} className="font-semibold">{product.product_name}</Link>
                 <p className="text-gray-600">${product.price}</p>
             </div>
 
@@ -59,7 +63,7 @@ const ShoppingCart = () => {
     const [updateCart] = useUpdateCartItemMutation();
     const [removeFromCart] = useRemoveFromCartMutation();
     const [cartItems, setCartItems] = useState([]);
-
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (user?.cart) {
@@ -72,7 +76,7 @@ const ShoppingCart = () => {
         }
         return acc;
     }, 0);
-    
+
 
     const handleQuantityChange = async (productId, newQuantity) => {
         const updatedQuantity = parseInt(newQuantity);
@@ -92,10 +96,11 @@ const ShoppingCart = () => {
     };
 
     const handleRemoveItem = async (productId) => {
-        setCartItems((prevCart) => prevCart.filter((item) => item.productId !== productId));
+        // setCartItems((prevCart) => prevCart.filter((item) => item.productId !== productId));
 
         try {
             await removeFromCart(productId);
+            dispatch(userApi.util.resetApiState());
         } catch (error) {
             console.error("Failed to remove item:", error);
         }
@@ -113,7 +118,7 @@ const ShoppingCart = () => {
             ))}
 
             <div className="flex justify-between mt-8">
-                <button className="px-4 py-2 border rounded">Return To Shop</button>
+                <Link href={"/products"} className="px-4 py-2 border rounded">Return To Shop</Link>
                 <button className="px-4 py-2 border rounded">Update Cart</button>
             </div>
 
@@ -122,7 +127,7 @@ const ShoppingCart = () => {
                     <h2 className="text-xl font-bold mb-4">Cart Total</h2>
                     <div className="flex justify-between mb-2">
                         <span>Subtotal:</span>
-                        <span>${totalPrice}</span>
+                        <span>${totalPrice.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between mb-2">
                         <span>Shipping:</span>
@@ -130,11 +135,11 @@ const ShoppingCart = () => {
                     </div>
                     <div className="flex justify-between mb-4">
                         <span>Total:</span>
-                        <span>${totalPrice}</span>
+                        <span>${totalPrice.toFixed(2)}</span>
                     </div>
-                    <button className="w-full bg-red-500 text-white py-2 rounded">
+                    <Link href={'/checkout'} className="w-full inline-block text-center bg-red-500 text-white py-2 rounded">
                         Proceed to checkout
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>

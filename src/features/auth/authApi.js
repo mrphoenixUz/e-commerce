@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const authApi = createApi({
     reducerPath: 'authApi',
     baseQuery: fetchBaseQuery({ 
-        baseUrl: process.env.REACT_APP_API_BASE_URL || 'http://localhost:3003',
+        baseUrl: process.env.REACT_APP_API_BASE_URL || 'https://phoenix-shop-backend.onrender.com',
         prepareHeaders: (headers, { getState }) => {
             if (typeof window !== 'undefined') {
                 const token = localStorage.getItem('token');

@@ -1,8 +1,9 @@
 "use client"
 import React, { useEffect } from 'react';
-import { useGetUserQuery } from "@/features/user/userApi";
+import { useGetUserQuery, userApi } from "@/features/user/userApi";
 import { useAddToCartMutation, useGetProductQuery, useRemoveFromFavouritesMutation } from "@/features/products/productsApi";
 import { Trash2 } from "lucide-react";
+import noo from "@/images/noo.jpeg";
 import { useDispatch } from 'react-redux';
 
 const WishlistItem = ({ productId, onRemove, onAddToCart }) => {
@@ -14,7 +15,7 @@ const WishlistItem = ({ productId, onRemove, onAddToCart }) => {
         <div className="relative group">
             <div className="border rounded-lg p-4 h-full flex flex-col">
                 <img
-                    src={`http://localhost:3003${product.pictures[0]}`}
+                    src={product.pictures[0] ? `https://phoenix-shop-backend.onrender.com${product.pictures[0]}` : noo.src}
                     alt={product.product_name}
                     className="w-full h-48 object-cover mb-4 rounded"
                 />
@@ -47,7 +48,7 @@ const WishlistPage = () => {
     const { data: user, refetch } = useGetUserQuery();
     const [removeFromWishlist] = useRemoveFromFavouritesMutation();
     const [addToCart] = useAddToCartMutation();
-
+    const dispatch = useDispatch();
     const handleRemoveFromWishlist = async (productId) => {
         try {
             await removeFromWishlist(productId).unwrap();
@@ -72,6 +73,7 @@ const WishlistPage = () => {
                 // dispatch(removeFromWishlist(productId));
                 await removeFromWishlist(productId);
             }
+            dispatch(userApi.util.resetApiState());
         } catch (error) {
             console.error("Failed to move items to bag:", error);
         }

@@ -14,11 +14,11 @@ const HomePage = () => {
     <div>
       <Hero />
       {/*!!! <FlashSales /> */}
-      <Categories />
+      {/* <Categories /> */}
       {/*!!! <ThisMonth /> */}
       {/*!!! <SpecialOffer /> */}
       <OurProducts />
-      <Featured />
+      {/* <Featured /> */}
       <Services />
     </div>
   )

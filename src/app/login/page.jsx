@@ -7,6 +7,7 @@ import { useLoginMutation } from '@/features/auth/authApi';
 const LoginPage = () => {
   const router = useRouter();
   const [login, { isLoading }] = useLoginMutation();
+  const [error, setError] = React.useState("");
   const [formData, setFormData] = React.useState({
     email: '',
     password: '',
@@ -24,10 +25,10 @@ const LoginPage = () => {
       const response = await login(formData).unwrap();
       localStorage.setItem('token', response.accessToken);
       localStorage.setItem('user', JSON.stringify(response.user));
-      // console.log("responsee", JSON.stringify(response.user))
       router.push('/');
     } catch (error) {
-      console.error('Failed to log in:', error);
+      // console.error('Failed to log in:', error);
+      setError("Invalid email or password");
     }
   }
   return (
@@ -50,7 +51,11 @@ const LoginPage = () => {
             <h1 className="text-3xl font-bold text-gray-900">Log in to Exclusive</h1>
             <p className="text-gray-600 mt-2">Enter your details below</p>
           </div>
-
+          {error && (
+            <p className="text-red-500 text-sm text-center bg-red-100 p-2 rounded-md">
+              {error}
+            </p>
+          )}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
               <div>

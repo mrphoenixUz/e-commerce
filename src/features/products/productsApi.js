@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const productsApi = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3003',
+    baseUrl: 'https://phoenix-shop-backend.onrender.com',
     prepareHeaders: (headers, { getState }) => {
       const token = localStorage.getItem('token');
       if (token) {
@@ -57,6 +57,12 @@ export const productsApi = createApi({
       }),
       invalidatesTags: ["User"], // This ensures the UI updates automatically
     }),
+    getCategories: builder.query({
+      query: () => '/categories',
+    }),
+    searchProduct: builder.query({
+      query: (searchTerm) => `/products/search/${searchTerm}`,
+    })
   }),
 });
 
@@ -67,5 +73,7 @@ export const {
   useUpdateCartItemMutation,
   useRemoveFromCartMutation,
   useAddToFavouritesMutation,
-  useRemoveFromFavouritesMutation
+  useRemoveFromFavouritesMutation,
+  useGetCategoriesQuery,
+  useSearchProductQuery
 } = productsApi;
