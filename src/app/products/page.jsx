@@ -12,13 +12,26 @@ import Loading from "@/components/Loading";
 import { useGetUserQuery, userApi } from "@/features/user/userApi";
 import { useDispatch } from "react-redux";
 import noo from "@/images/noo.jpeg";
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
+
+const SearchComponent = () => {
+    const searchParams = useSearchParams();
+    const searchTerm = useMemo(() => searchParams.get("search") || "", [searchParams]);
+
+    return searchTerm;
+};
 
 export default function ProductsPage() {
-    const searchParams = useSearchParams();
-const searchTerm = useMemo(() => searchParams.get("search"), [searchParams]);
+    return (
+        <Suspense fallback={<Loading />}>
+            <MainProductsPage />
+        </Suspense>
+    );
+}
 
-
+const MainProductsPage = () => {
+    const searchTerm = SearchComponent();
+    console.log("searchTerm", searchTerm);
     const { data: products, isLoading, error } = useGetProductsQuery();
     const { data: filteredProducts } = useSearchProductQuery(searchTerm, {
         skip: !searchTerm,
