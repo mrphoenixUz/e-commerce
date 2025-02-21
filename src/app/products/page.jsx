@@ -86,18 +86,19 @@ const MainProductsPage = () => {
                 {displayedProducts?.map((product) => {
                     const isInCart = user?.cart.some((item) => item.productId == product.id);
                     return (
-                        <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden group">
+                        <div className="bg-white rounded-lg shadow-md overflow-hidden group transition-all duration-300 hover:shadow-lg">
                             {/* Product Image */}
                             <div className="relative aspect-square">
                                 <img
-                                    src={product.pictures[0] ? `https://phoenix-shop-backend.onrender.com${product.pictures[0]}` : noo.src}
+                                    src={
+                                        product.pictures[0] ? `https://phoenix-shop-backend.onrender.com${product.pictures[0]}` : "/placeholder.svg"
+                                    }
                                     alt={product.product_name}
-                                    // fill
-                                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
                                 />
                                 <Link
                                     href={`/products/${product.id}`}
-                                    className="absolute top-2 right-2 p-2 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                    className="absolute top-3 right-3 p-2 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-gray-100"
                                 >
                                     <Eye className="w-5 h-5 text-gray-600" />
                                 </Link>
@@ -106,12 +107,12 @@ const MainProductsPage = () => {
                             {/* Product Details */}
                             <div className="p-4">
                                 <Link href={`/products/${product.id}`} className="block">
-                                    <h3 className="text-lg font-medium mb-2 hover:text-red-500 transition-colors">
+                                    <h3 className="text-lg font-medium mb-2 hover:text-red-500 transition-colors line-clamp-2">
                                         {product.product_name}
                                     </h3>
                                 </Link>
-                                <div className="flex justify-between items-center mb-2">
-                                    <div className="text-red-500 font-semibold">${Number(product.price).toFixed(2)}</div>
+                                <div className="flex justify-between items-center mb-4">
+                                    <div className="text-red-500 font-semibold text-lg">${Number(product.price).toFixed(2)}</div>
                                     <div className="flex items-center">
                                         {[...Array(5)].map((_, i) => (
                                             <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
@@ -124,7 +125,7 @@ const MainProductsPage = () => {
                                 {isInCart ? (
                                     <Link
                                         href="/cart"
-                                        className="w-full bg-black text-white py-2 flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors disabled:bg-gray-400"
+                                        className="w-full bg-black text-white py-2 px-4 rounded-md flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors"
                                     >
                                         <ShoppingCart className="w-5 h-5" />
                                         Go to Cart
@@ -133,7 +134,7 @@ const MainProductsPage = () => {
                                     <button
                                         onClick={() => handleAddToCart(product.id)}
                                         disabled={isAddingToCart}
-                                        className="w-full bg-black text-white py-2 flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors disabled:bg-gray-400"
+                                        className="w-full bg-black text-white py-2 px-4 rounded-md flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                                     >
                                         <ShoppingCart className="w-5 h-5" />
                                         {isAddingToCart ? "Adding..." : "Add To Cart"}
