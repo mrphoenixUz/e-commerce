@@ -85,6 +85,18 @@ const Header = () => {
               {isAuthenticated ? (
                 // Authenticated user icons
                 <div className='flex items-center justify-between gap-2'>
+                  <form onSubmit={handleSearch} className="md:flex hidden w-full mt-4 h-10 items-center bg-[#F5F5F5] justify-between rounded-md">
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="bg-transparent outline-none ml-5 w-full placeholder:text-xs placeholder:font-normal"
+                      placeholder="What are you looking for?"
+                    />
+                    <button type="submit">
+                      <Search className='mr-3' />
+                    </button>
+                  </form>
                   <Link href={"/wishlist"}><Heart /></Link>
                   <Link href={"/cart"}><ShoppingCart /> </Link>
                   <div className="relative" ref={dropdownRef}>

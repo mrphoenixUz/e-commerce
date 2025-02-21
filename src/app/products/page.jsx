@@ -12,10 +12,12 @@ import Loading from "@/components/Loading";
 import { useGetUserQuery, userApi } from "@/features/user/userApi";
 import { useDispatch } from "react-redux";
 import noo from "@/images/noo.jpeg";
+import { useMemo } from "react";
 
 export default function ProductsPage() {
     const searchParams = useSearchParams();
-    const searchTerm = searchParams.get("search");
+const searchTerm = useMemo(() => searchParams.get("search"), [searchParams]);
+
 
     const { data: products, isLoading, error } = useGetProductsQuery();
     const { data: filteredProducts } = useSearchProductQuery(searchTerm, {
