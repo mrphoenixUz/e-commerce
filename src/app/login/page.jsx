@@ -48,7 +48,7 @@ const LoginPage = () => {
         {/* Right side - Form */}
         <div className="w-full md:w-1/2 max-w-md mx-auto space-y-8 p-4">
           <div className="text-center md:text-left">
-            <h1 className="text-3xl font-bold text-gray-900">Log in to Exclusive</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Log in to PhoenixShop</h1>
             <p className="text-gray-600 mt-2">Enter your details below</p>
           </div>
           {error && (
@@ -94,7 +94,7 @@ const LoginPage = () => {
               </a>
             </div>
 
-            <button
+            {/* <button
               type="button"
               className="w-full py-3 px-4 bg-white border border-gray-300 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-50 transition-colors"
             >
@@ -117,7 +117,7 @@ const LoginPage = () => {
                 />
               </svg>
               <span className="text-gray-700">Log in with Google</span>
-            </button>
+            </button> */}
           </form>
 
           <p className="text-center text-gray-600">

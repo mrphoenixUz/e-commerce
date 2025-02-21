@@ -103,7 +103,7 @@ const SignupPage = () => {
               {isLoading ? 'Creating Account...' : 'Create Account'}
             </button>
 
-            <button
+            {/* <button
               type="button"
               className="w-full py-3 px-4 bg-white border border-gray-300 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-50 transition-colors"
             >
@@ -126,7 +126,7 @@ const SignupPage = () => {
                 />
               </svg>
               <span className="text-gray-700">Sign up with Google</span>
-            </button>
+            </button> */}
           </form>
 
           <p className="text-center text-gray-600">
