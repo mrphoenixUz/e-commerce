@@ -86,9 +86,6 @@ const LoginPage = () => {
               >
                 {isLoading ? 'Loading...' : 'Log in'}
               </button>
-              <a href="/forgot-password" className="text-red-500 hover:text-red-600">
-                Forget Password?
-              </a>
             </div>
           </form>
 
