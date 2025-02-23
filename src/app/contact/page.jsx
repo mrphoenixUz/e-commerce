@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react"
 import { Phone, Mail } from "lucide-react"
 
@@ -13,8 +12,6 @@ export default function ContactPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Handle form submission
-    console.log(formData)
   }
 
   const handleChange = (e) => {
@@ -28,9 +25,7 @@ export default function ContactPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
       <div className="grid md:grid-cols-[300px_1fr] gap-8">
-        {/* Left Column - Contact Information */}
         <div className="space-y-8">
-          {/* Call To Us Section */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
@@ -44,7 +39,6 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Write To US Section */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
@@ -59,7 +53,6 @@ export default function ContactPage() {
           </div>
         </div>
 
-        {/* Right Column - Contact Form */}
         <div>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

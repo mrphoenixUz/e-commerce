@@ -1,6 +1,5 @@
 import { Instagram, LinkedIn, RateReview, Twitter } from "@mui/icons-material"
 import Image from "next/image"
-// import { Twitter, Instagram, Linkedin } from "lucide-react"
 import left from "@/images/left-side.png"
 import tom from "@/images/tom.png"
 import emma from "@/images/emma.png"
@@ -34,7 +33,6 @@ export default function AboutPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-      {/* Hero Section */}
       <div className="grid md:grid-cols-2 gap-8 items-center mb-16">
         <div className="space-y-6">
           <h1 className="text-4xl font-bold">Our Story</h1>
@@ -59,7 +57,6 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
         {stats.map((stat, index) => (
           <div
@@ -68,7 +65,7 @@ export default function AboutPage() {
           >
             <div className="flex justify-center mb-4">
               <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center">
-                <span className="text-xl"><RateReview className="text-black"/></span>
+                <span className="text-xl"><RateReview className="text-black" /></span>
               </div>
             </div>
             <div className="text-2xl font-bold mb-2">{stat.number}</div>
@@ -77,7 +74,6 @@ export default function AboutPage() {
         ))}
       </div>
 
-      {/* Team Section */}
       <div className="grid md:grid-cols-3 gap-8">
         {team.map((member, index) => (
           <div key={index} className="text-center">
@@ -105,17 +101,6 @@ export default function AboutPage() {
           </div>
         ))}
       </div>
-
-      {/* Carousel Dots */}
-      {/* <div className="flex justify-center space-x-2 mt-8">
-        {[...Array(5)].map((_, i) => (
-          <button
-            key={i}
-            className={`w-2.5 h-2.5 rounded-full ${i === 0 ? "bg-red-500" : "bg-gray-300"}`}
-            aria-label={`Go to slide ${i + 1}`}
-          />
-        ))}
-      </div> */}
     </div>
   )
 }

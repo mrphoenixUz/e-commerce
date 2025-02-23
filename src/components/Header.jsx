@@ -33,7 +33,6 @@ const Header = () => {
     dispatch(initializeAuth())
   }, [dispatch])
 
-  // Close dropdown and mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -65,7 +64,6 @@ const Header = () => {
     <div className="">
       <div className="container mx-auto px-4 mt-6 mb-4">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-          {/* Logo and mobile menu button */}
           <div className="flex justify-between items-center">
             <Link
               href={"/"}
@@ -86,18 +84,15 @@ const Header = () => {
             </button>
           </div>
 
-          {/* Navigation - desktop horizontal */}
           <ul className="hidden md:flex md:flex-row md:gap-6">
             <Link href={"/"}>Home</Link>
             <Link href={"/contact"}>Contact</Link>
             <Link href={"/about"}>About</Link>
           </ul>
 
-          {/* Search and icons - shown below nav on mobile */}
           <div className="hidden md:flex flex-col md:flex-row items-center gap-5 mt-4 md:mt-0">
             <div className="flex gap-5 mt-4 md:mt-0">
               {isAuthenticated ? (
-                // Authenticated user icons
                 <div className="flex items-center justify-between gap-2">
                   <form
                     onSubmit={handleSearch}
@@ -140,7 +135,6 @@ const Header = () => {
                   </div>
                 </div>
               ) : (
-                // Non-authenticated user buttons
                 <div className="flex md:flex-col lg:flex-row gap-4">
                   <Link href="/login" className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
                     Login
@@ -173,12 +167,10 @@ const Header = () => {
         </form>
       </div>
 
-      {/* Mobile Menu */}
       <div
         ref={mobileMenuRef}
-        className={`fixed top-0 right-0 bottom-0 w-64 bg-white z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
-          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 bottom-0 w-64 bg-white z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         <div className="p-4 flex flex-col h-full">
           <button onClick={() => setMobileMenuOpen(false)} className="mb-4 self-end">
@@ -260,7 +252,6 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Divider */}
       <div className="border-b border-black w-full mt-4"></div>
     </div>
   )

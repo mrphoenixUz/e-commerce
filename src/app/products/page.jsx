@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ShoppingCart, Eye, Star } from "lucide-react";
@@ -10,8 +9,7 @@ import {
 } from "@/features/products/productsApi";
 import Loading from "@/components/Loading";
 import { useGetUserQuery, userApi } from "@/features/user/userApi";
-import { useDispatch, useSelector } from "react-redux";
-import noo from "@/images/noo.jpeg";
+import { useDispatch } from "react-redux";
 import { Suspense, useMemo, useState } from "react";
 
 const SearchComponent = () => {
@@ -44,7 +42,7 @@ const MainProductsPage = () => {
 
     const handleAddToCart = async (productId) => {
         if (!user) {
-            router.push("/login"); // Redirect to login page if not authenticated
+            router.push("/login");
             return;
         }
         setLoadingProductId(productId);
@@ -77,7 +75,6 @@ const MainProductsPage = () => {
 
     return (
         <div className="container mx-auto px-12 my-12">
-            {/* Title */}
             <div className="flex justify-between items-center mb-6">
                 <div className="flex items-center">
                     <div className="w-1 h-6 bg-red-500 mr-2"></div>
@@ -87,13 +84,11 @@ const MainProductsPage = () => {
                 </div>
             </div>
 
-            {/* Products Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {displayedProducts?.map((product) => {
                     const isInCart = user?.cart.some((item) => item.productId == product.id);
                     return (
                         <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden group transition-all duration-300 hover:shadow-lg">
-                            {/* Product Image */}
                             <div className="relative aspect-square">
                                 <img
                                     src={
@@ -110,7 +105,6 @@ const MainProductsPage = () => {
                                 </Link>
                             </div>
 
-                            {/* Product Details */}
                             <div className="p-4">
                                 <Link href={`/products/${product.id}`} className="block">
                                     <h3 className="text-lg font-medium mb-2 hover:text-red-500 transition-colors line-clamp-2">
@@ -127,7 +121,6 @@ const MainProductsPage = () => {
                                     </div>
                                 </div>
 
-                                {/* Add to Cart Button */}
                                 {isInCart ? (
                                     <Link
                                         href="/cart"

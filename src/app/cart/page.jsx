@@ -96,8 +96,6 @@ const ShoppingCart = () => {
     };
 
     const handleRemoveItem = async (productId) => {
-        // setCartItems((prevCart) => prevCart.filter((item) => item.productId !== productId));
-
         try {
             await removeFromCart(productId);
             dispatch(userApi.util.resetApiState());

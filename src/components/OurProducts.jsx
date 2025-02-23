@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Star, StarBorder } from "@mui/icons-material";
 import Link from "next/link";
 import { useGetProductsQuery } from "@/features/products/productsApi";
 import noo from "@/images/noo.jpeg";
@@ -16,16 +15,14 @@ const OurProducts = () => {
         setVisibleIndex((prevIndex) => (prevIndex - 1 + products.length) % products.length);
     };
 
-    // Calculate number of items to display based on screen size
     const getVisibleCount = () => {
         if (typeof window !== 'undefined') {
             if (window.innerWidth < 640) return 1;
             if (window.innerWidth < 768) return 2;
             if (window.innerWidth < 1024) return 3;
-            // if (window.innerWidth < 1280) return 6;
             return 4;
         }
-        return 4; // Default for SSR
+        return 4;
     };
 
     const [visibleCount, setVisibleCount] = useState(8);
@@ -34,14 +31,8 @@ const OurProducts = () => {
         const handleResize = () => {
             setVisibleCount(getVisibleCount());
         };
-
-        // Set initial count
         setVisibleCount(getVisibleCount());
-
-        // Add event listener
         window.addEventListener('resize', handleResize);
-
-        // Cleanup
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
@@ -79,7 +70,7 @@ const OurProducts = () => {
                                 src={product.pictures[0] ? `http://localhost:3003${product.pictures[0]}` : noo.src}
                                 alt={product.product_name}
                                 className="object-contain w-full h-full"
-                            />  
+                            />
                         </div>
                         <div className="mt-3 sm:mt-4">
                             <h2 className="font-medium text-sm sm:text-base truncate">{product.product_name}</h2>

@@ -15,16 +15,6 @@ const Footer = () => {
                 <div>
                     <h2 className="font-bold text-xl mb-6">Phoenix</h2>
                     <p className="mb-4 text-base font-normal">Subscribe</p>
-                    {/* <div className="flex items-center rounded border-[1.5px] border-[#FAFAFA] overflow-hidden">
-                        <input
-                            type="email"
-                            placeholder="Enter your email"
-                            className="bg-transparent px-3 py-3 text-sm outline-none placeholder:opacity-80"
-                        />
-                        <button className="">
-                            <img src="./send-icon.svg" alt="Submit" width={24} height={24} />
-                        </button>
-                    </div> */}
                 </div>
 
                 <div>

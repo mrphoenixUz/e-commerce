@@ -1,9 +1,7 @@
-// app/products/[id]/ProductDetailClient.jsx
 'use client';
 import { use, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Star, Minus, Plus, Heart, Truck, RotateCcw, Home } from 'lucide-react';
-// import { useGetProductQuery, useAddToCartMutation } from '@/redux/api/apiSlice';
 import { useGetProductQuery, useAddToCartMutation, useAddToFavouritesMutation, useRemoveFromFavouritesMutation } from '@/features/products/productsApi';
 import Loading from './Loading';
 import { useGetUserQuery, userApi } from '@/features/user/userApi';
@@ -15,14 +13,8 @@ import { useRouter } from 'next/navigation';
 
 export default function ProductDetailClient({ productId }) {
     const [quantity, setQuantity] = useState(1);
-    // const [selectedSize, setSelectedSize] = useState('M');
-    // const [selectedColor, setSelectedColor] = useState('white');
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
     const { data: user } = useGetUserQuery();
-    // if (user) {
-    //     console.log("Updated user: ", user.cart);
-    //     console.log("bormi", user.cart.some(item => item.productId == productId));
-    // }
     const isInCart = user?.cart.some(item => item.productId == productId)
     const isInFavourites = user?.favourites.some(item => Number(item) == Number(productId));
     const router = useRouter();
@@ -31,12 +23,10 @@ export default function ProductDetailClient({ productId }) {
     const [addToFavourites] = useAddToFavouritesMutation();
     const [removeFromFavorites] = useRemoveFromFavouritesMutation();
     const dispatch = useDispatch();
-    // const sizes = ['XS', 'S', 'M', 'L', 'XL'];
-    // const colors = ['white', 'coral'];
 
     const handleAddToCart = async () => {
         if (!user) {
-            router.push("/login"); // Redirect to login page if not authenticated
+            router.push("/login");
             return;
         }
         try {
@@ -53,7 +43,7 @@ export default function ProductDetailClient({ productId }) {
 
     const handleAddToFavourites = async () => {
         if (!user) {
-            router.push("/login"); // Redirect to login page if not authenticated
+            router.push("/login");
             return;
         }
         try {
@@ -103,11 +93,8 @@ export default function ProductDetailClient({ productId }) {
     return (
         <div className="container mx-auto !py-12">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Left side - Images */}
                 <div className="space-y-4">
-                    {/* Main Image */}
                     <div className="relative h-[400px] sm:h-[500px] w-full border rounded-lg overflow-hidden">
-                        {/* Blurred background image */}
                         <div
                             className="absolute inset-0 bg-cover bg-center blur-xl scale-90 opacity-50"
                             style={{
@@ -117,9 +104,7 @@ export default function ProductDetailClient({ productId }) {
                             }}
                         />
 
-                        {/* Center container */}
                         <div className="relative h-full w-full flex items-center justify-center bg-transparent">
-                            {/* Main product image */}
                             <img
                                 src={product.pictures && product.pictures[selectedImageIndex]
                                     ? `http://localhost:3003${product.pictures[selectedImageIndex]}`
@@ -129,18 +114,16 @@ export default function ProductDetailClient({ productId }) {
                             />
                         </div>
                     </div>
-                    {/* Thumbnail Images */}
                     <div className="flex gap-2 overflow-x-auto pb-2">
                         {product.pictures.map((img, idx) => (
                             <button
                                 key={idx}
                                 onClick={() => setSelectedImageIndex(idx)}
                                 className={`relative flex items-center justify-center w-20 h-20 flex-shrink-0 rounded-md overflow-hidden ${selectedImageIndex === idx
-                                        ? 'border-2 border-black'
-                                        : 'border-gray-200 hover:border-gray-300'
+                                    ? 'border-2 border-black'
+                                    : 'border-gray-200 hover:border-gray-300'
                                     }`}
                             >
-                                {/* Blurred background */}
                                 <div
                                     className="absolute inset-0 bg-cover bg-center blur-md scale-110 opacity-50"
                                     style={{
@@ -148,7 +131,6 @@ export default function ProductDetailClient({ productId }) {
                                     }}
                                 />
 
-                                {/* Thumbnail image */}
                                 <div className="relative w-full h-full flex items-center justify-center bg-transparent">
                                     <img
                                         src={img ? `http://localhost:3003${img}` : '/noo.jpeg'}
@@ -161,49 +143,12 @@ export default function ProductDetailClient({ productId }) {
                     </div>
                 </div>
 
-                {/* Right side - Product Details */}
                 <div className="mt-4 space-y-6">
                     <h1 className="text-2xl font-bold">{product.product_name}</h1>
 
                     <div className="text-3xl font-bold">${Number(product.price).toFixed(2)}</div>
                     <p className="text-gray-600">{product.description || 'No description available.'}</p>
 
-                    {/* Colors */}
-                    {/* <div className="space-y-2">
-                        <div className="font-medium">Colours:</div>
-                        <div className="flex space-x-2">
-                            {colors.map((color) => (
-                                <button
-                                    key={color}
-                                    onClick={() => setSelectedColor(color)}
-                                    className={`w-6 h-6 rounded-full border-2 ${selectedColor === color ? 'border-blue-500' : 'border-gray-300'
-                                        }`}
-                                    style={{ backgroundColor: color }}
-                                />
-                            ))}
-                        </div>
-                    </div> */}
-
-                    {/* Sizes */}
-                    {/* <div className="space-y-2">
-                        <div className="font-medium">Size:</div>
-                        <div className="flex space-x-2">
-                            {sizes.map((size) => (
-                                <button
-                                    key={size}
-                                    onClick={() => setSelectedSize(size)}
-                                    className={`px-3 py-1 border rounded ${selectedSize === size
-                                        ? 'bg-red-500 text-white'
-                                        : 'border-gray-300'
-                                        }`}
-                                >
-                                    {size}
-                                </button>
-                            ))}
-                        </div>
-                    </div> */}
-
-                    {/* Quantity and Buy */}
                     <div className="flex space-x-4">
                         <div className="flex items-center border rounded-md">
                             <button
@@ -250,7 +195,6 @@ export default function ProductDetailClient({ productId }) {
                         )}
                     </div>
 
-                    {/* Delivery Information */}
                     <div className="space-y-4 border rounded-lg p-4">
                         <div className="flex items-center space-x-2">
                             <Truck className="w-6 h-6" />

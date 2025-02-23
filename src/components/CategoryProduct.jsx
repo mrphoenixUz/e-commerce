@@ -1,6 +1,4 @@
-// CategoryProducts.js - Client Component
 'use client';
-
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';

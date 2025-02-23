@@ -76,7 +76,6 @@ const WishlistPage = () => {
         try {
             for (const productId of user?.favourites || []) {
                 await addToCart({ productId, quantity: 1 });
-                // dispatch(removeFromWishlist(productId));
                 await removeFromWishlist(productId);
             }
             dispatch(userApi.util.resetApiState());

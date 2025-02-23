@@ -3,8 +3,6 @@ import "./globals.css";
 import TopHeader from "@/components/TopHeader";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Provider } from "react-redux";
-import { store } from "./store";
 import Providers from "@/components/Providers";
 
 const poppins = Poppins({

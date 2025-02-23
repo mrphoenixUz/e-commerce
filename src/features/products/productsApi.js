@@ -55,7 +55,7 @@ export const productsApi = createApi({
         url: `/users/favourites/${productId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["User"], // This ensures the UI updates automatically
+      invalidatesTags: ["User"],
     }),
     getCategories: builder.query({
       query: () => '/categories',

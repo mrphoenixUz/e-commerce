@@ -1,6 +1,5 @@
 "use client"
 import { useEffect, useState } from "react"
-import Image from "next/image"
 import { useGetUserQuery } from "@/features/user/userApi";
 import { useGetProductQuery } from "@/features/products/productsApi";
 import noo from "@/images/noo.jpeg";
@@ -20,7 +19,6 @@ const OrderItem = ({ item }) => {
                 <img
                     src={product.pictures[0] ? `http://localhost:3003${product.pictures[0]}` : noo.src}
                     alt={product.product_name}
-                    // fill
                     className="object-cover"
                 />
             </div>
@@ -44,10 +42,9 @@ export default function CheckoutPage() {
         }
     })
 
-    // const subtotal = products.reduce((sum, product) => sum + Number.parseFloat(product.price), 0)
-    const shipping = 0 // Free shipping
+    const shipping = 0
     let total = cartItems.reduce((acc, item) => {
-        if (item.quantity && item.price) {  // Ensure both quantity and price are valid
+        if (item.quantity && item.price) {
             return acc + (Number(item.price) * Number(item.quantity));
         }
         return acc;
@@ -56,7 +53,6 @@ export default function CheckoutPage() {
         <div className="min-h-screen bg-gray-50 py-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid md:grid-cols-2 gap-8">
-                    {/* Billing Details Form */}
                     <div className="bg-white p-6 rounded-lg shadow-sm">
                         <h2 className="text-2xl font-semibold mb-6">Billing Details</h2>
                         <form className="space-y-4">
@@ -155,7 +151,6 @@ export default function CheckoutPage() {
                         </form>
                     </div>
 
-                    {/* Order Summary */}
                     <div className="bg-white p-6 rounded-lg shadow-sm">
                         <h2 className="text-2xl font-semibold mb-6">Order Summary</h2>
                         <div className="space-y-4">
@@ -167,10 +162,6 @@ export default function CheckoutPage() {
                             ))}
 
                             <div className="border-t pt-4 space-y-2">
-                                {/* <div className="flex justify-between">
-                                    <span className="text-gray-600">Subtotal:</span>
-                                    <span>${subtotal.toFixed(2)}</span>
-                                </div> */}
                                 <div className="flex justify-between">
                                     <span className="text-gray-600">Shipping:</span>
                                     <span className="text-green-600">Free</span>
