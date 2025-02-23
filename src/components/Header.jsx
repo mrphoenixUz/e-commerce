@@ -1,91 +1,108 @@
 "use client"
-import Link from 'next/link'
-import React, { useEffect, useRef, useState } from 'react'
-import { useRouter } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLogoutMutation } from '@/features/auth/authApi';
-import { initializeAuth } from '@/features/auth/authSlice';
-import { Heart, Search, ShoppingCart, User2 } from 'lucide-react';
+import Link from "next/link"
+import { useEffect, useRef, useState } from "react"
+import { useRouter } from "next/navigation"
+import { useDispatch, useSelector } from "react-redux"
+import { useLogoutMutation } from "@/features/auth/authApi"
+import { initializeAuth } from "@/features/auth/authSlice"
+import { Heart, Search, ShoppingCart, User2, X } from "lucide-react"
+import { useGetCategoriesQuery } from "@/features/products/productsApi"
 
 const Header = () => {
-  const router = useRouter();
-  const dispatch = useDispatch();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [logout] = useLogoutMutation();
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
-  const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter()
+  const dispatch = useDispatch()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [logout] = useLogoutMutation()
+  const [isOpen, setIsOpen] = useState(false)
+  const dropdownRef = useRef(null)
+  const [searchTerm, setSearchTerm] = useState("")
+  const mobileMenuRef = useRef(null)
+
+  const { data: categories } = useGetCategoriesQuery()
 
   const handleSearch = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (searchTerm.trim()) {
-      router.push(`/products?search=${searchTerm}`);
+      router.push(`/products?search=${searchTerm}`)
     }
-  };
+  }
 
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
 
   useEffect(() => {
-    dispatch(initializeAuth());
-  }, [dispatch]);
+    dispatch(initializeAuth())
+  }, [dispatch])
 
-  // Close dropdown when clicking outside
+  // Close dropdown and mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
+        setIsOpen(false)
       }
-    };
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        setMobileMenuOpen(false)
+      }
+    }
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
 
   const handleLogout = async () => {
     try {
-      await logout().unwrap();
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      dispatch({ type: 'auth/logout' });
-      setIsOpen(false);
-      router.push('/login');
+      await logout().unwrap()
+      localStorage.removeItem("token")
+      localStorage.removeItem("user")
+      dispatch({ type: "auth/logout" })
+      setIsOpen(false)
+      router.push("/login")
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error("Logout failed:", error)
     }
-  };
-
+  }
 
   return (
-    <div className=''>
-      <div className='container mx-auto px-4 mt-6 mb-4'>
-        <div className='flex flex-col md:flex-row md:items-center md:justify-between'>
+    <div className="">
+      <div className="container mx-auto px-4 mt-6 mb-4">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between">
           {/* Logo and mobile menu button */}
-          <div className='flex justify-between items-center'>
-            <Link href={'/'} className='selection:bg-transparent h-8 md:h-auto font-bold font-serif text-3xl text-orange-600'>Phoenix<span className='text-orange-900'>Shop</span></Link>
-            <button
-              className='md:hidden'
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          <div className="flex justify-between items-center">
+            <Link
+              href={"/"}
+              className="selection:bg-transparent h-8 md:h-auto font-bold font-serif text-3xl text-orange-600"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
+              Phoenix<span className="text-orange-900">Shop</span>
+            </Link>
+            <button className="md:hidden" onClick={() => setMobileMenuOpen(true)}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
           </div>
 
-          {/* Navigation - mobile dropdown, desktop horizontal */}
-          <ul className={`${mobileMenuOpen ? 'flex' : 'hidden'} px-3 flex-col items-center justify-between gap-4 mt-4 md:mt-0 md:flex md:flex-row md:gap-6`}>
+          {/* Navigation - desktop horizontal */}
+          <ul className="hidden md:flex md:flex-row md:gap-6">
             <Link href={"/"}>Home</Link>
             <Link href={"/contact"}>Contact</Link>
             <Link href={"/about"}>About</Link>
           </ul>
 
           {/* Search and icons - shown below nav on mobile */}
-          <div className={`${mobileMenuOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row items-center gap-5 mt-4 md:mt-0`}>
-            <div className='flex gap-5 mt-4 md:mt-0'>
+          <div className="hidden md:flex flex-col md:flex-row items-center gap-5 mt-4 md:mt-0">
+            <div className="flex gap-5 mt-4 md:mt-0">
               {isAuthenticated ? (
                 // Authenticated user icons
-                <div className='flex items-center justify-between gap-2'>
-                  <form onSubmit={handleSearch} className="md:flex hidden w-full mt-4 h-10 items-center bg-[#F5F5F5] justify-between rounded-md">
+                <div className="flex items-center justify-between gap-2">
+                  <form
+                    onSubmit={handleSearch}
+                    className="md:flex hidden w-full mt-4 h-10 items-center bg-[#F5F5F5] justify-between rounded-md"
+                  >
                     <input
                       type="text"
                       value={searchTerm}
@@ -94,16 +111,17 @@ const Header = () => {
                       placeholder="What are you looking for?"
                     />
                     <button type="submit">
-                      <Search className='mr-3' />
+                      <Search className="mr-3" />
                     </button>
                   </form>
-                  <Link href={"/wishlist"}><Heart /></Link>
-                  <Link href={"/cart"}><ShoppingCart /> </Link>
+                  <Link href={"/wishlist"}>
+                    <Heart />
+                  </Link>
+                  <Link href={"/cart"}>
+                    <ShoppingCart />{" "}
+                  </Link>
                   <div className="relative" ref={dropdownRef}>
-                    <button
-                      onClick={() => setIsOpen(!isOpen)}
-                      className="focus:outline-none"
-                    >
+                    <button onClick={() => setIsOpen(!isOpen)} className="focus:outline-none">
                       <User2 />
                     </button>
 
@@ -114,10 +132,7 @@ const Header = () => {
                           Manage My Account
                         </Link>
                         <hr className="my-2" />
-                        <button
-                          onClick={handleLogout}
-                          className="block w-full text-left px-4 py-2 hover:bg-purple-600"
-                        >
+                        <button onClick={handleLogout} className="block w-full text-left px-4 py-2 hover:bg-purple-600">
                           Logout
                         </button>
                       </div>
@@ -127,10 +142,7 @@ const Header = () => {
               ) : (
                 // Non-authenticated user buttons
                 <div className="flex md:flex-col lg:flex-row gap-4">
-                  <Link
-                    href="/login"
-                    className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-                  >
+                  <Link href="/login" className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
                     Login
                   </Link>
                   <Link
@@ -144,7 +156,10 @@ const Header = () => {
             </div>
           </div>
         </div>
-        <form onSubmit={handleSearch} className="flex md:hidden w-full mt-4 h-10 items-center bg-[#F5F5F5] justify-between rounded-md">
+        <form
+          onSubmit={handleSearch}
+          className="flex md:hidden w-full mt-4 h-10 items-center bg-[#F5F5F5] justify-between rounded-md"
+        >
           <input
             type="text"
             value={searchTerm}
@@ -153,15 +168,103 @@ const Header = () => {
             placeholder="What are you looking for?"
           />
           <button type="submit">
-            <Search className='mr-3' />
+            <Search className="mr-3" />
           </button>
         </form>
       </div>
 
+      {/* Mobile Menu */}
+      <div
+        ref={mobileMenuRef}
+        className={`fixed top-0 right-0 bottom-0 w-64 bg-white z-50 shadow-lg transform transition-transform duration-300 ease-in-out ${
+          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="p-4 flex flex-col h-full">
+          <button onClick={() => setMobileMenuOpen(false)} className="mb-4 self-end">
+            <X />
+          </button>
+          <ul className="space-y-4 flex-grow">
+            <li>
+              <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
+                Contact
+              </Link>
+            </li>
+            <li>
+              <Link href="/about" onClick={() => setMobileMenuOpen(false)}>
+                About
+              </Link>
+            </li>
+            <li className="font-bold mt-4">Categories</li>
+            {categories &&
+              categories.map((category) => (
+                <li key={category.id}>
+                  <Link
+                    href={`/category/${category.category_name.toLowerCase()}`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {category.category_name}
+                  </Link>
+                </li>
+              ))}
+          </ul>
+          <div className="mt-auto space-y-4">
+            <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2">
+              <Heart size={20} />
+              <span>Favorites</span>
+            </Link>
+            <Link href="/cart" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2">
+              <ShoppingCart size={20} />
+              <span>Cart</span>
+            </Link>
+            {isAuthenticated ? (
+              <div>
+                <Link href="/account" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2">
+                  <User2 size={20} />
+                  <span>My Account</span>
+                </Link>
+                <button
+                  onClick={() => {
+                    handleLogout()
+                    setMobileMenuOpen(false)
+                  }}
+                  className="mt-2 flex items-center gap-2 text-red-600"
+                >
+                  <span>Logout</span>
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <Link
+                  href="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block w-full text-center px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors border border-gray-300 rounded-md"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/signup"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block w-full text-center px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* Divider */}
-      <div className='border-b border-black w-full mt-4'></div>
+      <div className="border-b border-black w-full mt-4"></div>
     </div>
   )
 }
 
 export default Header
+

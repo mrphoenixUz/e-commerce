@@ -25,7 +25,7 @@ const CartItem = ({ item, onQuantityChange, onRemove }) => {
         <div className="flex items-center gap-4 border-b py-4">
             <div className="relative">
                 <img
-                    src={product.pictures[0] ? `https://phoenix-shop-backend.onrender.com${product.pictures[0]}` : noo.src}
+                    src={product.pictures[0] ? `http://localhost:3003${product.pictures[0]}` : noo.src}
                     alt={product.product_name}
                     className="w-24 h-24 object-cover"
                 />

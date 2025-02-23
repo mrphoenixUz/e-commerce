@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const productsApi = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://phoenix-shop-backend.onrender.com',
+    baseUrl: 'http://localhost:3003',
     prepareHeaders: (headers, { getState }) => {
       const token = localStorage.getItem('token');
       if (token) {

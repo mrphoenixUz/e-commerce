@@ -53,7 +53,7 @@ const CategoryProducts = ({ products, categoryName }) => {
               >
                 <div className="relative h-64 overflow-hidden">
                   <img
-                    src={product.pictures[0] ? `https://phoenix-shop-backend.onrender.com${product.pictures[imageIndexes[product.id] || 0]}` : noo.src}
+                    src={product.pictures[0] ? `http://localhost:3003${product.pictures[imageIndexes[product.id] || 0]}` : noo.src}
                     alt={product.product_name}
                     className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105"
                   />

@@ -76,7 +76,7 @@ const OurProducts = () => {
                     <Link href={`/products/${product.id}`} key={product.id} className="p-3 sm:p-4 rounded-lg mx-auto w-full max-w-sm">
                         <div className="flex h-[200px] sm:h-[250px] w-full bg-[#F5F5F5] justify-center items-center rounded-lg overflow-hidden">
                             <img
-                                src={product.pictures[0] ? `https://phoenix-shop-backend.onrender.com${product.pictures[0]}` : noo.src}
+                                src={product.pictures[0] ? `http://localhost:3003${product.pictures[0]}` : noo.src}
                                 alt={product.product_name}
                                 className="object-contain w-full h-full"
                             />  

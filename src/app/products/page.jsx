@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ShoppingCart, Eye, Star } from "lucide-react";
 import {
     useAddToCartMutation,
@@ -10,9 +10,9 @@ import {
 } from "@/features/products/productsApi";
 import Loading from "@/components/Loading";
 import { useGetUserQuery, userApi } from "@/features/user/userApi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import noo from "@/images/noo.jpeg";
-import { Suspense, useMemo } from "react";
+import { Suspense, useMemo, useState } from "react";
 
 const SearchComponent = () => {
     const searchParams = useSearchParams();
@@ -36,12 +36,18 @@ const MainProductsPage = () => {
     const { data: filteredProducts } = useSearchProductQuery(searchTerm, {
         skip: !searchTerm,
     });
-
+    const [loadingProductId, setLoadingProductId] = useState(null);
+    const router = useRouter();
     const [addToCart, { isLoading: isAddingToCart }] = useAddToCartMutation();
     const { data: user } = useGetUserQuery();
     const dispatch = useDispatch();
 
     const handleAddToCart = async (productId) => {
+        if (!user) {
+            router.push("/login"); // Redirect to login page if not authenticated
+            return;
+        }
+        setLoadingProductId(productId);
         try {
             await addToCart({ productId, quantity: 1 }).unwrap();
             alert("Product added to cart successfully!");
@@ -86,12 +92,12 @@ const MainProductsPage = () => {
                 {displayedProducts?.map((product) => {
                     const isInCart = user?.cart.some((item) => item.productId == product.id);
                     return (
-                        <div className="bg-white rounded-lg shadow-md overflow-hidden group transition-all duration-300 hover:shadow-lg">
+                        <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden group transition-all duration-300 hover:shadow-lg">
                             {/* Product Image */}
                             <div className="relative aspect-square">
                                 <img
                                     src={
-                                        product.pictures[0] ? `https://phoenix-shop-backend.onrender.com${product.pictures[0]}` : "/placeholder.svg"
+                                        product.pictures[0] ? `http://localhost:3003${product.pictures[0]}` : "/placeholder.svg"
                                     }
                                     alt={product.product_name}
                                     className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
@@ -133,11 +139,11 @@ const MainProductsPage = () => {
                                 ) : (
                                     <button
                                         onClick={() => handleAddToCart(product.id)}
-                                        disabled={isAddingToCart}
+                                        disabled={loadingProductId === product.id}
                                         className="w-full bg-black text-white py-2 px-4 rounded-md flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                                     >
                                         <ShoppingCart className="w-5 h-5" />
-                                        {isAddingToCart ? "Adding..." : "Add To Cart"}
+                                        {loadingProductId === product.id ? "Adding..." : "Add To Cart"}
                                     </button>
                                 )}
                             </div>

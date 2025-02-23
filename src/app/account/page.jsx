@@ -120,7 +120,7 @@ const UserAccount = () => {
           <div className="flex flex-col md:flex-row gap-4 md:gap-8 items-center md:items-start">
             <div className="flex flex-col items-center mb-4 w-full md:w-auto">
               <img
-                src={user.profile_picture ? `https://phoenix-shop-backend.onrender.com${user.profile_picture}` : noo.src}
+                src={user.profile_picture ? `http://localhost:3003${user.profile_picture}` : noo.src}
                 alt="Profile"
                 className="w-64 h-64 rounded-full border mb-4"
               />
@@ -169,9 +169,9 @@ const UserAccount = () => {
                     </>
                   )}
                 </div>
-                {/* {isEditing && (
+                {isEditing && (
                   <div className="mt-6">
-                    <h3 className="font-semibold mb-2">Change Password</h3>
+                    {/* <h3 className="font-semibold mb-2">Change Password</h3>
                     <input
                       type="password"
                       name="current_password"
@@ -195,14 +195,14 @@ const UserAccount = () => {
                       onChange={handleInputChange}
                       className="border-2 p-2 w-full mb-2"
                       placeholder="Confirm New Password"
-                    />
+                    /> */}
                     <div className="flex justify-end mt-4">
                       <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">
                         Save Changes
                       </button>
                     </div>
                   </div>
-                )} */}
+                )}
               </form>
             </div>
           </div>

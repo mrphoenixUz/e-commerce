@@ -16,11 +16,11 @@ const OrderItem = ({ item }) => {
 
     return (
         <div key={product.id} className="flex items-center space-x-4">
-            <div className="relative h-16 w-16 overflow-hidden rounded-lg border">
-                <Image
-                    src={product.pictures[0] ? `https://phoenix-shop-backend.onrender.com${product.pictures[0]}` : noo.src}
+            <div className="relative flex items-center justify-center h-16 w-16 overflow-hidden rounded-lg border">
+                <img
+                    src={product.pictures[0] ? `http://localhost:3003${product.pictures[0]}` : noo.src}
                     alt={product.product_name}
-                    fill
+                    // fill
                     className="object-cover"
                 />
             </div>

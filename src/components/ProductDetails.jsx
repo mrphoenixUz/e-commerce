@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { Favorite } from '@mui/icons-material';
 import { red } from '@mui/material/colors';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
 export default function ProductDetailClient({ productId }) {
     const [quantity, setQuantity] = useState(1);
@@ -24,7 +25,7 @@ export default function ProductDetailClient({ productId }) {
     // }
     const isInCart = user?.cart.some(item => item.productId == productId)
     const isInFavourites = user?.favourites.some(item => Number(item) == Number(productId));
-
+    const router = useRouter();
     const { data: product, isLoading, error } = useGetProductQuery(productId);
     const [addToCart, { isLoading: isAddingToCart }] = useAddToCartMutation();
     const [addToFavourites] = useAddToFavouritesMutation();
@@ -34,6 +35,10 @@ export default function ProductDetailClient({ productId }) {
     // const colors = ['white', 'coral'];
 
     const handleAddToCart = async () => {
+        if (!user) {
+            router.push("/login"); // Redirect to login page if not authenticated
+            return;
+        }
         try {
             await addToCart({
                 productId,
@@ -47,6 +52,10 @@ export default function ProductDetailClient({ productId }) {
     };
 
     const handleAddToFavourites = async () => {
+        if (!user) {
+            router.push("/login"); // Redirect to login page if not authenticated
+            return;
+        }
         try {
             await addToFavourites({
                 productId
@@ -97,16 +106,28 @@ export default function ProductDetailClient({ productId }) {
                 {/* Left side - Images */}
                 <div className="space-y-4">
                     {/* Main Image */}
-                    <div className="relative h-[400px] sm:h-[500px] w-full border rounded-lg overflow-hidden bg-gray-100">
-                        <Image
-                            src={product.pictures && product.pictures[selectedImageIndex]
-                                ? `https://phoenix-shop-backend.onrender.com${product.pictures[selectedImageIndex]}`
-                                : '/noo.jpeg'}
-                            alt={product.product_name}
-                            fill
-                            className="object-contain"
-                            priority
+                    <div className="relative h-[400px] sm:h-[500px] w-full border rounded-lg overflow-hidden">
+                        {/* Blurred background image */}
+                        <div
+                            className="absolute inset-0 bg-cover bg-center blur-xl scale-90 opacity-50"
+                            style={{
+                                backgroundImage: `url(${product.pictures && product.pictures[selectedImageIndex]
+                                    ? `http://localhost:3003${product.pictures[selectedImageIndex]}`
+                                    : '/noo.jpeg'})`,
+                            }}
                         />
+
+                        {/* Center container */}
+                        <div className="relative h-full w-full flex items-center justify-center bg-transparent">
+                            {/* Main product image */}
+                            <img
+                                src={product.pictures && product.pictures[selectedImageIndex]
+                                    ? `http://localhost:3003${product.pictures[selectedImageIndex]}`
+                                    : '/noo.jpeg'}
+                                alt={product.product_name}
+                                className="max-w-full max-h-full object-contain"
+                            />
+                        </div>
                     </div>
                     {/* Thumbnail Images */}
                     <div className="flex gap-2 overflow-x-auto pb-2">
@@ -114,17 +135,27 @@ export default function ProductDetailClient({ productId }) {
                             <button
                                 key={idx}
                                 onClick={() => setSelectedImageIndex(idx)}
-                                className={`relative w-20 h-20 flex-shrink-0 border rounded-md overflow-hidden ${selectedImageIndex === idx
-                                    ? 'border-2 border-black'
-                                    : 'border-gray-200 hover:border-gray-300'
+                                className={`relative flex items-center justify-center w-20 h-20 flex-shrink-0 rounded-md overflow-hidden ${selectedImageIndex === idx
+                                        ? 'border-2 border-black'
+                                        : 'border-gray-200 hover:border-gray-300'
                                     }`}
                             >
-                                <Image
-                                    src={img ? `https://phoenix-shop-backend.onrender.com${img}` : '/noo.jpeg'}
-                                    alt={`${product.product_name} view ${idx + 1}`}
-                                    fill
-                                    className="object-contain"
+                                {/* Blurred background */}
+                                <div
+                                    className="absolute inset-0 bg-cover bg-center blur-md scale-110 opacity-50"
+                                    style={{
+                                        backgroundImage: `url(${img ? `http://localhost:3003${img}` : '/noo.jpeg'})`,
+                                    }}
                                 />
+
+                                {/* Thumbnail image */}
+                                <div className="relative w-full h-full flex items-center justify-center bg-transparent">
+                                    <img
+                                        src={img ? `http://localhost:3003${img}` : '/noo.jpeg'}
+                                        alt={`${product.product_name} view ${idx + 1}`}
+                                        className="object-contain max-w-full max-h-full"
+                                    />
+                                </div>
                             </button>
                         ))}
                     </div>

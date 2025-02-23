@@ -5,6 +5,7 @@ import { useAddToCartMutation, useGetProductQuery, useRemoveFromFavouritesMutati
 import { Trash2 } from "lucide-react";
 import noo from "@/images/noo.jpeg";
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
 const WishlistItem = ({ productId, onRemove, onAddToCart }) => {
     const { data: product } = useGetProductQuery(productId);
@@ -15,7 +16,7 @@ const WishlistItem = ({ productId, onRemove, onAddToCart }) => {
         <div className="relative group">
             <div className="border rounded-lg p-4 h-full flex flex-col">
                 <img
-                    src={product.pictures[0] ? `https://phoenix-shop-backend.onrender.com${product.pictures[0]}` : noo.src}
+                    src={product.pictures[0] ? `http://localhost:3003${product.pictures[0]}` : noo.src}
                     alt={product.product_name}
                     className="w-full h-48 object-cover mb-4 rounded"
                 />
@@ -49,6 +50,7 @@ const WishlistPage = () => {
     const [removeFromWishlist] = useRemoveFromFavouritesMutation();
     const [addToCart] = useAddToCartMutation();
     const dispatch = useDispatch();
+    const router = useRouter();
     const handleRemoveFromWishlist = async (productId) => {
         try {
             await removeFromWishlist(productId).unwrap();
@@ -59,6 +61,10 @@ const WishlistPage = () => {
     };
 
     const handleAddToCart = async (productId) => {
+        if (!user) {
+            router.push("/login");
+            return;
+        }
         try {
             await addToCart({ productId, quantity: 1 });
         } catch (error) {
