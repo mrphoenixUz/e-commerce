@@ -8,6 +8,7 @@ const SignupPage = () => {
   const router = useRouter();
   const [signup, { isLoading }] = useSignupMutation();
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     first_name: '',
     email: '',
@@ -79,15 +80,22 @@ const SignupPage = () => {
                 />
               </div>
 
-              <div>
+              <div className='relative'>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Password"
                   className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+                >
+                  {showPassword ? '👁️' : '🙈'}
+                </button>
               </div>
             </div>
 

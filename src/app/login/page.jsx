@@ -8,6 +8,7 @@ const LoginPage = () => {
   const router = useRouter();
   const [login, { isLoading }] = useLoginMutation();
   const [error, setError] = React.useState("");
+  const [showPassword, setShowPassword] = React.useState(false);
   const [formData, setFormData] = React.useState({
     email: '',
     password: '',
@@ -66,16 +67,24 @@ const LoginPage = () => {
                 />
               </div>
 
-              <div>
+              <div className="relative">
                 <input
-                  type="password"
-                  name='password'
+                  type={showPassword ? "text" : "password"}
+                  name="password"
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Password"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+                >
+                  {showPassword ? '👁️' : '🙈'}
+                </button>
               </div>
+
             </div>
 
             <div className="flex items-center justify-between">
